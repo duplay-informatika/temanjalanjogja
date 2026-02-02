@@ -1,0 +1,99 @@
+import { useState, useEffect, memo } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import bromo from "@/assets/img/bromo.jpg";
+import rajaAmpat from "@/assets/img/raja-ampat.jpg";
+import borobudur from "@/assets/img/borobudur.jpeg";
+
+const heroImages = [rajaAmpat, bromo, borobudur];
+
+// Preload gambar hero pertama untuk LCP yang lebih cepat
+if (typeof window !== "undefined") {
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.as = "image";
+  link.href = rajaAmpat;
+  document.head.appendChild(link);
+}
+
+export const Hero = memo(function Hero() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000); // Ganti setiap 5 detik
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section
+      id="beranda"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      {/* Background Images with Fade Transition */}
+      {heroImages.map((image, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${index === currentImageIndex ? "opacity-100" : "opacity-0"
+            }`}
+          style={{
+            backgroundImage: `url('${image}')`,
+          }}
+        />
+      ))}
+
+      {/* Overlay Gradient */}
+      <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/70" />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div data-aos="fade-up">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            Jelajahi Keindahan
+            <br />
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-orange-400">
+              Yogyakarta
+            </span>
+          </h1>
+
+          <p
+            className="text-2xl md:text-3xl font-bold text-white max-w-2xl mx-auto mb-10"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <span className="relative">
+              <span className="absolute inset-0 text-cyan-500 blur-md animate-pulse">No Hidden Cost</span>
+              <span className="relative bg-gradient-to-r from-white to-cyan-100 bg-clip-text text-transparent">
+                No Hidden Cost
+              </span>
+            </span>
+          </p>
+
+          <div
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <Button variant="cyan" size="xl" asChild className="text-xl">
+              <Link to="/pesan">Mulai Petualangan</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+        <a
+          href="#stats"
+          className="flex flex-col items-center text-white/70 hover:text-white transition-colors"
+        >
+          <span className="text-sm mb-2">Scroll Down</span>
+          <ChevronDown className="w-6 h-6" />
+        </a>
+      </div>
+    </section>
+  );
+});
