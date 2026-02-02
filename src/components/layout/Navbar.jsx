@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { name: "Beranda", href: "/" },
-  { name: "Destinasi", href: "/#destinasi" },
-  { name: "Pakej", href: "/#paket" },
-  { name: "Kontak", href: "/#kontak" },
+  // { name: "Beranda", href: "/" },
+  // { name: "Destinasi", href: "/#destinasi" },
+  // { name: "Pakej", href: "/#paket" },
+  // { name: "Kontak", href: "/kontak" },
 ];
 
 export const Navbar = memo(function Navbar() {
